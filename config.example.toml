@@ -1,0 +1,29 @@
+# Example ledgerforge consumer config. Copy to a PRIVATE config.toml (gitignored) and edit.
+# The engine reads only what is here — no paths, account names, or numbers live in engine source.
+
+entity = "demo"
+base_currency = "GBP"
+
+[paths]
+txn_dir    = "data/statements"      # bank statements to ingest (relative paths resolve from this file)
+book_path  = "build/demo.gnucash"   # GnuCash book to build / read
+rules_path = "rules/demo.json"      # categorisation rules
+output_dir = "build/tools"          # generated HTML (the local server's root)
+save_dir   = "build/pending"        # where the tool pages POST their edits
+chart_csv  = "data/chart.csv"       # chart of accounts
+
+# Out-of-repo master registries. These hold real account numbers and MUST live outside any repo.
+# load_account_markers() unions the `account_number` field across every file found here.
+master_dirs  = ["~/.config/ledgerforge/demo"]
+master_files = ["accounts.json", "accounts-master.json"]
+
+[markers]
+# Account-holder names that mark an own-account transfer (not secret, but personal).
+names = ["JANE DOE", "J DOE"]
+# PRIVATE config ONLY: an account number not yet in a master registry. Leave empty in shared configs.
+extra = []
+
+[fx_to_base]
+# Fixed translation rates to the base currency (foreign -> base). Snapshot values.
+EUR = "0.855"
+USD = "0.79"

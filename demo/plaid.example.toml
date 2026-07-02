@@ -1,0 +1,5 @@
+# Copy this to demo/plaid_secrets.toml (gitignored) and fill in your OWN Plaid SANDBOX keys.
+# Get them free at https://dashboard.plaid.com/developers/keys — the Sandbox secret, not Production.
+[plaid]
+client_id     = "your_plaid_client_id"
+sandbox_secret = "your_plaid_sandbox_secret"

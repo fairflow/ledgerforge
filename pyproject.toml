@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ledgerforge"
+version = "0.1.0"
+description = "A small engine for building double-entry GnuCash books from bank statements, categorising by rules, and serving a local review toolkit."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Matthew Fairtlough" }]
+keywords = ["accounting", "gnucash", "double-entry", "personal-finance", "ofx", "piecash"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Office/Business :: Financial :: Accounting",
+]
+dependencies = ["piecash>=1.2,<2"]
+
+[project.optional-dependencies]
+pdf = ["pypdf>=5"]
+xlsx = ["openpyxl>=3"]
+dev = ["pytest>=8"]
+
+[project.urls]
+Homepage = "https://github.com/fairflow/ledgerforge"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ledgerforge"]

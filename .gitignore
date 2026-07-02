@@ -1,0 +1,21 @@
+# venvs
+.venv/
+venv/
+
+# python
+__pycache__/
+*.pyc
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+
+# real financial data & secrets — NEVER commit (public repo!)
+*.gnucash
+*.ofx
+*.qfx
+*.qif
+config.toml
+*secret*
+*secrets*
+demo/data/statements/
