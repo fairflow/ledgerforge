@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {"account": "Income:Salary",        "match": ["ACME PAYROLL", "SALARY"]},
+    {"account": "Income:Interest",       "match": ["INTEREST"]},
+    {"account": "Expenses:Groceries",    "match": ["TESCO", "SAINSBURY"]},
+    {"account": "Expenses:Dining",       "match": ["NANDO", "COSTA", "CAFE"]},
+    {"account": "Expenses:Utilities",    "match": ["BRITISH GAS", "THAMES WATER"]},
+    {"account": "Expenses:Transport",    "match": ["GWR", "TFL"]}
+  ]
+}
