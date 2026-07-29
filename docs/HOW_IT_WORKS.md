@@ -24,7 +24,8 @@ but buckets of every kind:
 - **Liabilities** — what you owe: credit card, mortgage
 - **Income** — where money comes from: salary, interest
 - **Expenses** — where it goes: groceries, energy, insurance
-- **Equity** — the starting point: opening balances when the book begins
+- **Equity** — what the whole thing is worth to you: the opening balances the book started
+  from, plus everything it has earned since
 
 Every transaction **moves value between two (or more) accounts**, and the amounts always
 sum to zero. Buy £40 of groceries on the credit card, and the book records
@@ -32,15 +33,41 @@ sum to zero. Buy £40 of groceries on the credit card, and the book records
 *Assets:Bank:Current +2000, Income:Salary −2000*. Nothing ever appears from nowhere or
 vanishes into nowhere.
 
-Because every entry has an equal and opposite partner, the whole book obeys one equation
-at every moment:
+Because every entry has an equal and opposite partner, the book obeys one identity at every
+moment:
 
-> **Assets − Liabilities = Equity + Income − Expenses**
+> **Assets − Liabilities = Equity**
 
-If the equation holds, every penny is accounted for. If it doesn't, something concrete is
-wrong — a missing statement, a duplicated import, a miscoded transfer — and the size of the
-discrepancy tells you what to hunt for. That self-checking property is the entire reason
-for the double-entry ceremony, and it is what a shoebox of statements can never give you.
+That is the balance sheet, and it is *always* true. Income and expenses are not further
+terms on the right-hand side; they are the **explanation of how equity changed**. At the end
+of a period, profit (income less expenses) is added to equity as retained earnings — and the
+very same profit is already present on the left, as a rise in assets or a fall in
+liabilities. A £500 profit does not appear once, on one side. It appears on both sides at
+once, which is precisely why the identity keeps holding.
+
+So the accounts page presents it the way a balance sheet does, with equity opened up:
+
+| | |
+|---|---|
+| Assets | |
+| Liabilities | |
+| &nbsp;&nbsp;&nbsp;&nbsp;posted equity | opening balances |
+| &nbsp;&nbsp;&nbsp;&nbsp;retained earnings | income − expenses for the period |
+| &nbsp;&nbsp;&nbsp;&nbsp;FX translation reserve | revaluing foreign balances into the reporting currency |
+| **Total equity** | |
+| **Liabilities + Equity** | **= Assets** |
+
+Beneath that presentation sits a stricter test. It takes every account at its recorded value,
+with no currency revaluation anywhere, and adds the lot up:
+
+> **Assets − Liabilities − Equity − Income + Expenses = 0**
+
+This is the raw double-entry integrity check: since every split has an equal and opposite
+partner, the signed total across all five kinds of account must be exactly nought. If it
+isn't, something concrete is broken — a missing statement, a duplicated import, a miscoded
+transfer — and the size of the residual tells you what to hunt for. That self-checking
+property is the entire reason for the double-entry ceremony, and it is what a shoebox of
+statements can never give you.
 
 ## The problem ledgerforge solves
 
