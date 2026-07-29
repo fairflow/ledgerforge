@@ -11,6 +11,10 @@ this repository. Everything specific to a given ledger arrives through a `Settin
 `config.toml`. This is a hard rule — it is what lets the engine be public while the ledgers that use
 it stay private.
 
+**New to double-entry bookkeeping or GnuCash?** [docs/HOW_IT_WORKS.md](docs/HOW_IT_WORKS.md) explains
+the whole shape of the system from first principles — what a GnuCash book is, why double-entry makes
+it self-checking, and how statements become a book — assuming no accounting background.
+
 ## What's in the box
 
 | Module | Responsibility |
