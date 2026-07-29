@@ -30,6 +30,48 @@ These duplicate the design of the private household toolkit exactly — same pag
 with fictional data. The books balance by construction (the double-entry check on the accounts page
 is a true zero).
 
+## Two build modes
+
+The demo exists to be **published**, so the default build assumes there is no Python on the far end.
+
+| | Default (static) | `--local` |
+|---|---|---|
+| Save button | **Download JSON** — hands the delta to the browser | **Save to server** — POSTs to `ledgerforge.serve` |
+| "Route exact" | queues the routing into the download payload | POSTs each routing immediately |
+| Needs a backend | no — works on shared hosting, GitHub Pages, `file://` | yes — the LAN-gated dev server |
+| Demo banner | shown | hidden |
+
+```bash
+python demo/build_demo.py            # static: publishable anywhere
+python demo/build_demo.py --local    # wire the Save buttons to the dev server
+```
+
+Everything genuinely interactive — editing tokens, moving them between accounts, the over-broad-token
+guard, the filter, `Generate text` / `Copy` — is pure browser JavaScript and behaves identically in
+both modes. Only the *persistence* step differs, because only that step ever needed a server. See
+[`_demo_mode.py`](_demo_mode.py).
+
+Individual pages honour the same switch:
+
+```bash
+LEDGERFORGE_DEMO_LOCAL=1 python demo/make_editor.py
+```
+
+## Publishing it
+
+[`deploy.sh`](deploy.sh) rebuilds in static mode, refuses to publish a build that still calls a
+`/save` endpoint, and rsyncs `demo/site/` to wherever you keep it:
+
+```bash
+cp demo/.env.example demo/.env.local     # add your host, user, path (gitignored)
+./demo/deploy.sh                         # dry run
+./demo/deploy.sh --live                  # publish
+```
+
+The demo is its **own website** — four files with only relative links. Keep it in its own directory
+(e.g. `public_html/ledgerforge-demo/`); do not copy it inside another site's document root, and have
+that other site simply link to it.
+
 ### Serving it as a web service (DDEV)
 
 The generated `demo/site/` is a static page you can serve any way you like. With

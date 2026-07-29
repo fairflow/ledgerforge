@@ -12,6 +12,8 @@ import html
 from datetime import date
 from pathlib import Path
 
+from _demo_mode import banner, banner_css
+
 HERE = Path(__file__).parent
 SITE = HERE / "site"
 OUT = SITE / "index.html"
@@ -41,7 +43,7 @@ TOOLS = [
 COMMANDS = [
     ("Build everything", "python demo/build_demo.py", "Parses the fictional statements, categorises by rules, builds the GnuCash book, regenerates all these pages."),
     ("Serve locally", "ddev start", "Serve this site at https://ledgerforge-demo.ddev.site/ (from demo/)."),
-    ("Serve via the engine", "python -c \"from ledgerforge.serve import run; run('demo/site', 'demo/pending')\"", "The LAN-gated dev server; enables the pages' Save-to-server buttons."),
+    ("Serve via the engine", "python -c \"from ledgerforge.serve import run; run('demo/site', 'demo/pending')\"", "The LAN-gated dev server; run it locally and the categoriser pages gain Save-to-server buttons that write the delta straight to disk."),
     ("Engine tests", "python -m pytest tests -q", "The ledgerforge test suite."),
 ]
 
@@ -100,7 +102,9 @@ code,.mono{{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}}
 code{{background:#f1f2f4;border-radius:5px;padding:1px 5px}}
 .note{{background:#fff;border:1px solid #e3e3e3;border-left:3px solid #2563eb;border-radius:8px;padding:12px 14px;font-size:13px;color:#444}}
 .foot{{margin-top:30px;color:#999;font-size:12px;line-height:1.6}}
+{banner_css()}
 </style></head><body>
+{banner()}
 <div class="wrap">
   <h1>ledgerforge demo toolkit</h1>
   <p class="sub">The hub for the demo tools — <b>everything here is fictional data.</b></p>

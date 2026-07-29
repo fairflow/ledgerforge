@@ -132,7 +132,19 @@ def render() -> None:
 
 
 if __name__ == "__main__":
+    import os
     import sys
     sys.path.insert(0, str(HERE))
+
+    # The demo is built for static hosting by default, so it works published
+    # with no Python behind it. --local instead wires the Save buttons to the
+    # ledgerforge dev server. See demo/_demo_mode.py.
+    if "--local" in sys.argv:
+        os.environ["LEDGERFORGE_DEMO_LOCAL"] = "1"
+
     build()
     render()
+
+    from _demo_mode import static_mode
+    print("mode:", "static — publishable, saves download in-browser" if static_mode()
+          else "local — Save buttons POST to the ledgerforge dev server")

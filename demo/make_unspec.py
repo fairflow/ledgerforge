@@ -16,6 +16,8 @@ from collections import defaultdict
 from decimal import Decimal
 from pathlib import Path
 
+from _demo_mode import banner, banner_css, download_js, save_button, static_mode
+
 from ledgerforge.parsers import parse_ofx
 from ledgerforge.rules import categorise, normalise
 
@@ -120,21 +122,24 @@ button.sec{background:#fff;color:#2563eb}
 .ua{width:290px;max-width:100%}
 .usrc{font-size:11px;color:#0f6e56;margin-top:3px}
 .udet{font-size:11px;color:#999;margin-top:2px;font-family:ui-monospace,Menlo,Consolas,monospace;line-height:1.5}
+__BANNERCSS__
 </style></head><body>
+__BANNER__
 <div class="bar">
   <strong>Assign unspecified payees</strong>
   <span class="count"><span id="u-as">0</span> assigned · <span id="u-sk">0</span> blank · __N__ total</span>
   <input id="u-filter" placeholder="filter…">
   <span style="flex:1"></span>
-  <button id="u-save">Save to server</button>
+  __SAVEBTN__
   <button id="u-gen" class="sec">Generate text</button>
   <button id="u-copy" class="sec">Copy</button>
   <span id="u-saved" style="font-size:12px;color:#0f6e56"></span>
 </div>
-<div class="note">Each row: the payee (times seen · signed total), the <b style="color:#0f6e56">source account(s)</b> it came from, and the dated transactions — so you can place it. Set a <b>token</b> (what will match — pick a distinctive chunk, not 2–3 letters) and an <b>account</b>; clear the account to skip a payee. When done, click <b>Save to server</b> (needs the ledgerforge dev server) — the Generate/Copy buttons work anywhere.</div>
+<div class="note">Each row: the payee (times seen · signed total), the <b style="color:#0f6e56">source account(s)</b> it came from, and the dated transactions — so you can place it. Set a <b>token</b> (what will match — pick a distinctive chunk, not 2–3 letters) and an <b>account</b>; clear the account to skip a payee. When done, __SAVEHINT__</div>
 <textarea id="out" readonly></textarea>
 <div class="wrap"><div id="u-list"></div></div>
 <script>
+__HEADJS__
 var DATA=__DATA__, ACCTS=__ACCTS__, ALLDESC=__ALLDESC__;
 var list=document.getElementById("u-list");
 var dl=document.createElement("datalist");dl.id="ua-list";ACCTS.forEach(function(a){var o=document.createElement("option");o.value=a;dl.appendChild(o);});list.appendChild(dl);
@@ -154,12 +159,7 @@ DATA.forEach(function(r,i){
     var rb=document.createElement("button");rb.className="sec";rb.type="button";rb.textContent="Route exact";
     rb.addEventListener("click",(function(rr,rrow,rua,rrb){return function(){
       var acct=rua.value.trim();if(!acct){alert("Set an account first");return;}
-      var txn=rr.txns[0];rrb.disabled=true;rrb.textContent="saving…";
-      fetch("/save/route_txn",{method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({acct:txn.aid,date:txn.d,amount:txn.a.toFixed(2),to:acct})})
-      .then(function(res){return res.json();})
-      .then(function(){rrb.textContent="Saved ✓";rrow.style.opacity="0.4";})
-      .catch(function(e){rrb.disabled=false;rrb.textContent="Route exact";alert("Failed: "+e);});
+      __ROUTEJS__
     };})(r,row,ua,rb));
     f.appendChild(rb);
   }
@@ -187,14 +187,84 @@ function buildJSON(){
   var byA={};Object.keys(map).forEach(function(k){var m=map[k];(byA[m.a]=byA[m.a]||[]).push(m.t);});
   return {assignments:Object.keys(byA).sort().map(function(a){return {account:a,tokens:byA[a]};}),skipped:DATA.filter(function(r){return !(r._a.value.trim()&&r._t.value.trim());}).length};
 }
-document.getElementById("u-save").addEventListener("click",function(){if(!guardOK())return;var btn=this,s=document.getElementById("u-saved");s.textContent="saving…";var payload=buildJSON();fetch("/save/assignments",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(j){var n=payload.assignments.reduce(function(acc,a){return acc+a.tokens.length;},0);s.textContent="✓ "+n+" assignment"+(n===1?"":"s")+" saved";s.style.fontWeight="bold";DATA.forEach(function(r){if(r._t.value.trim()&&r._a.value.trim()){r._t.disabled=true;r._a.disabled=true;var row=r._t.closest(".ur");if(row)row.style.opacity="0.4";}});btn.disabled=true;btn.textContent="Saved";}).catch(function(e){s.textContent="";alert("Save failed — is the dev server running? "+e);});});
+__SAVEJS__
 </script></body></html>"""
+
+    if static_mode():
+        route_js = (
+            'var txn=rr.txns[0];'
+            'LF_ROUTES.push({acct:txn.aid,date:txn.d,amount:txn.a.toFixed(2),to:acct});'
+            'rrb.disabled=true;rrb.textContent="Queued ✓";rrow.style.opacity="0.4";'
+        )
+        save_js = (
+            'document.getElementById("u-save").addEventListener("click",function(){'
+            'if(!guardOK())return;var btn=this,s=document.getElementById("u-saved");'
+            'var payload=buildJSON();'
+            'if(LF_ROUTES.length)payload.routes=LF_ROUTES;'
+            'var n=payload.assignments.reduce(function(acc,a){return acc+a.tokens.length;},0);'
+            'var ok=lfDownload("assignments.json",JSON.stringify(payload,null,2));'
+            'if(!ok){s.textContent="download blocked — use Generate text → Copy";return;}'
+            's.textContent="downloaded ✓ "+n+" assignment"+(n===1?"":"s");'
+            's.style.fontWeight="bold";'
+            'DATA.forEach(function(r){if(r._t.value.trim()&&r._a.value.trim()){'
+            'r._t.disabled=true;r._a.disabled=true;'
+            'var row=r._t.closest(".ur");if(row)row.style.opacity="0.4";}});'
+            'btn.textContent="Downloaded";});'
+        )
+        routes_decl = "var LF_ROUTES=[];"
+    else:
+        route_js = (
+            'var txn=rr.txns[0];rrb.disabled=true;rrb.textContent="saving…";'
+            'fetch("/save/route_txn",{method:"POST",'
+            'headers:{"Content-Type":"application/json"},'
+            'body:JSON.stringify({acct:txn.aid,date:txn.d,'
+            'amount:txn.a.toFixed(2),to:acct})})'
+            '.then(function(res){return res.json();})'
+            '.then(function(){rrb.textContent="Saved ✓";rrow.style.opacity="0.4";})'
+            '.catch(function(e){rrb.disabled=false;'
+            'rrb.textContent="Route exact";alert("Failed: "+e);});'
+        )
+        save_js = (
+            'document.getElementById("u-save").addEventListener("click",function(){'
+            'if(!guardOK())return;var btn=this,s=document.getElementById("u-saved");'
+            's.textContent="saving…";var payload=buildJSON();'
+            'fetch("/save/assignments",{method:"POST",'
+            'headers:{"Content-Type":"application/json"},'
+            'body:JSON.stringify(payload)})'
+            '.then(function(r){return r.json();})'
+            '.then(function(j){'
+            'var n=payload.assignments.reduce(function(acc,a){return acc+a.tokens.length;},0);'
+            's.textContent="✓ "+n+" assignment"+(n===1?"":"s")+" saved";'
+            's.style.fontWeight="bold";'
+            'DATA.forEach(function(r){if(r._t.value.trim()&&r._a.value.trim()){'
+            'r._t.disabled=true;r._a.disabled=true;'
+            'var row=r._t.closest(".ur");if(row)row.style.opacity="0.4";}});'
+            'btn.disabled=true;btn.textContent="Saved";})'
+            '.catch(function(e){s.textContent="";'
+            'alert("Save failed — is the dev server running? "+e);});});'
+        )
+        routes_decl = ""
+
+    save_hint = (
+        "click <b>Download JSON</b> to keep your assignments "
+        "&mdash; the Generate/Copy buttons work too."
+        if static_mode() else
+        "click <b>Save to server</b> (needs the ledgerforge dev server) "
+        "&mdash; the Generate/Copy buttons work anywhere."
+    )
 
     doc = (TEMPLATE
            .replace("__DATA__", json.dumps(rows, ensure_ascii=False))
            .replace("__ACCTS__", json.dumps(accts, ensure_ascii=False))
            .replace("__ALLDESC__", json.dumps(dict(ALLDESC), ensure_ascii=False))
-           .replace("__N__", str(len(rows))))
+           .replace("__N__", str(len(rows)))
+           .replace("__BANNERCSS__", banner_css())
+           .replace("__BANNER__", banner())
+           .replace("__SAVEBTN__", save_button("u-save"))
+           .replace("__SAVEHINT__", save_hint)
+           .replace("__ROUTEJS__", route_js)
+           .replace("__HEADJS__", download_js() + routes_decl)
+           .replace("__SAVEJS__", save_js))
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(doc, encoding="utf-8")
     print(f"wrote {OUT}  ({len(doc)} bytes)")

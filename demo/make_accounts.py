@@ -15,6 +15,8 @@ from datetime import date, datetime
 from decimal import Decimal
 from pathlib import Path
 
+from _demo_mode import banner, banner_css
+
 warnings.filterwarnings("ignore")
 import piecash  # noqa: E402
 
@@ -225,7 +227,9 @@ tr:last-child td{{border-bottom:none}}
 tr.collapsed .tog::before{{content:'\\25B8'}}
 tr.parent td.nm{{font-weight:500;cursor:pointer}}
 td.tot2{{font-family:ui-monospace,Menlo,Consolas,monospace;text-align:right;white-space:nowrap;color:#185fa5}}
+{banner_css()}
 </style></head><body>
+{banner()}
 <div class="wrap">
   <a class="back" href="index.html">&larr; toolkit home</a>
   <h1>Accounts &amp; balances</h1>

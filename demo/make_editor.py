@@ -12,6 +12,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from _demo_mode import banner, banner_css, download_js, save_button, static_mode
+
 HERE = Path(__file__).parent
 OUT = HERE / "site/edit_rules.html"
 
@@ -61,14 +63,16 @@ button.tb.on,button.mini.on{background:#fde2e2;border-color:#e0a0a0;color:#a32d2
 .in{font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;padding:5px 7px;border:1px solid #ccc;border-radius:6px}
 .rl{font-size:12px;color:#555;display:inline-flex;align-items:center;gap:5px}
 .addrow{margin-top:4px}
+__BANNERCSS__
 </style></head><body>
+__BANNER__
 <div class="bar">
   <strong>Edit rules</strong>
   <span class="count"><span id="ed-ch">0</span> changes · <span id="ed-dn">0</span> done · __N__ accounts</span>
   <input type="text" id="ed-filter" placeholder="filter…">
   <label><input type="checkbox" id="ed-hidedone"> hide done</label>
   <span style="flex:1"></span>
-  <button id="ed-save">Save to server</button>
+  __SAVEBTN__
   <button id="ed-gen" class="sec">Generate text</button>
   <button id="ed-copy" class="sec">Copy</button>
   <span id="ed-saved" style="font-size:12px;color:#0f6e56"></span>
@@ -174,14 +178,41 @@ function buildJSON(){
 var out=document.getElementById("out");
 document.getElementById("ed-gen").addEventListener("click",function(){out.value=buildText();out.style.display="block";out.focus();out.select();});
 document.getElementById("ed-copy").addEventListener("click",function(){if(!out.value)out.value=buildText();out.style.display="block";out.select();try{navigator.clipboard.writeText(out.value);}catch(e){document.execCommand("copy");}var b=this;b.textContent="Copied";setTimeout(function(){b.textContent="Copy";},1200);});
-document.getElementById("ed-save").addEventListener("click",function(){var s=document.getElementById("ed-saved");s.textContent="saving…";fetch("/save/rules",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({delta:buildJSON(),text:buildText()})}).then(function(r){return r.json();}).then(function(j){s.textContent="saved ✓ "+j.bytes+" bytes";}).catch(function(e){s.textContent="";alert("Save failed — is the dev server running? "+e);});});
+__DOWNLOADJS__
+__SAVEJS__
 refresh();
 </script></body></html>"""
+
+    if static_mode():
+        # No backend: hand the delta to the browser as a file instead.
+        save_js = (
+            'document.getElementById("ed-save").addEventListener("click",function(){'
+            'var s=document.getElementById("ed-saved");'
+            'var ok=lfDownload("rules-delta.json",JSON.stringify(buildJSON(),null,2));'
+            's.textContent=ok?"downloaded ✓ rules-delta.json"'
+            ':"download blocked — use Generate text → Copy";});'
+        )
+    else:
+        save_js = (
+            'document.getElementById("ed-save").addEventListener("click",function(){'
+            'var s=document.getElementById("ed-saved");s.textContent="saving…";'
+            'fetch("/save/rules",{method:"POST",headers:{"Content-Type":"application/json"},'
+            'body:JSON.stringify({delta:buildJSON(),text:buildText()})})'
+            '.then(function(r){return r.json();})'
+            '.then(function(j){s.textContent="saved ✓ "+j.bytes+" bytes";})'
+            '.catch(function(e){s.textContent="";'
+            'alert("Save failed — is the dev server running? "+e);});});'
+        )
 
     doc = (TEMPLATE
            .replace("__DATA__", json.dumps(G, ensure_ascii=False))
            .replace("__ACCTS__", json.dumps(ACCTS, ensure_ascii=False))
-           .replace("__N__", str(len(G))))
+           .replace("__N__", str(len(G)))
+           .replace("__BANNERCSS__", banner_css())
+           .replace("__BANNER__", banner())
+           .replace("__SAVEBTN__", save_button("ed-save"))
+           .replace("__DOWNLOADJS__", download_js())
+           .replace("__SAVEJS__", save_js))
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(doc, encoding="utf-8")
     print(f"wrote {OUT}  ({len(doc)} bytes)  accounts: {len(G)}")
