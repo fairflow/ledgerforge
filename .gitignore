@@ -12,6 +12,9 @@ dist/
 
 # real financial data & secrets — NEVER commit (public repo!)
 *.gnucash
+# …except the ONE fictional demo book (GnuCash XML = diffable text), shipped so anyone
+# who clones the repo can open and test it without rebuilding. Nothing real here.
+!demo/web/static/demo.gnucash
 *.qfx
 *.qif
 config.toml

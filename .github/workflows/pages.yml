@@ -2,9 +2,9 @@
 # Serves at https://fairflow.github.io/ledgerforge/  (BASE_PATH must match that sub-path).
 # Enable once: repo Settings → Pages → Build and deployment → Source: "GitHub Actions".
 #
-# The engine is the source of truth even in CI: we rebuild the fictional GnuCash book from the
-# committed statements and re-export its JSON, rather than committing any *.gnucash binary (which
-# the repo deliberately gitignores).
+# The engine-exported data (src/lib/data/*.json) and the fictional GnuCash book
+# (static/demo.gnucash, XML) are committed, so CI is a plain static build — no Python.
+# Regenerate those locally with demo/web/scripts/export_data.py + book_to_xml.py.
 name: Deploy demo toolkit to Pages
 
 on:
@@ -12,9 +12,6 @@ on:
     branches: [main]
     paths:
       - 'demo/web/**'
-      - 'demo/build_demo.py'
-      - 'demo/data/**'
-      - 'src/ledgerforge/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -30,33 +27,20 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/web
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Rebuild the fictional book + export JSON (engine is source of truth)
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e . piecash
-          python demo/build_demo.py
-          python demo/web/scripts/export_data.py
-          cp demo/build/demo.gnucash demo/web/static/demo.gnucash
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: demo/web/package-lock.json
-      - name: Build the static site
-        working-directory: demo/web
-        run: |
-          npm ci
-          npm run build
+      - run: npm ci
+      - run: npm run build
         env:
           BASE_PATH: /ledgerforge
-
       - uses: actions/upload-pages-artifact@v3
         with:
           path: demo/web/build
