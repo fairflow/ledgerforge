@@ -1,0 +1,228 @@
+{
+  "base": "GBP",
+  "order": [
+    "Assets",
+    "Liabilities",
+    "Equity",
+    "Income",
+    "Expenses"
+  ],
+  "fx": {
+    "GBP": 1.0,
+    "EUR": 0.855
+  },
+  "bs_date": "2026-01-31",
+  "pl_start": "2026-01-01",
+  "accounts": [
+    {
+      "fullname": "Assets",
+      "name": "Assets",
+      "code": "1000",
+      "type": "ASSET",
+      "top": "Assets",
+      "depth": 0,
+      "balance": 0.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Assets:Bank",
+      "name": "Bank",
+      "code": "1100",
+      "type": "ASSET",
+      "top": "Assets",
+      "depth": 1,
+      "balance": 0.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Assets:Bank:Current",
+      "name": "Current",
+      "code": "1110",
+      "type": "BANK",
+      "top": "Assets",
+      "depth": 2,
+      "balance": 3156.25,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Assets:Bank:Euro Account",
+      "name": "Euro Account",
+      "code": "1130",
+      "type": "BANK",
+      "top": "Assets",
+      "depth": 2,
+      "balance": 431.0,
+      "currency": "EUR"
+    },
+    {
+      "fullname": "Assets:Bank:Savings",
+      "name": "Savings",
+      "code": "1120",
+      "type": "BANK",
+      "top": "Assets",
+      "depth": 2,
+      "balance": 5003.5,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Assets:Cash",
+      "name": "Cash",
+      "code": "1200",
+      "type": "CASH",
+      "top": "Assets",
+      "depth": 1,
+      "balance": 150.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Equity",
+      "name": "Equity",
+      "code": "3000",
+      "type": "EQUITY",
+      "top": "Equity",
+      "depth": 0,
+      "balance": 0.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Equity:Opening Balances",
+      "name": "Opening Balances",
+      "code": "3100",
+      "type": "EQUITY",
+      "top": "Equity",
+      "depth": 1,
+      "balance": 6258.96,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Equity:Opening Balances EUR",
+      "name": "Opening Balances EUR",
+      "code": "3110",
+      "type": "EQUITY",
+      "top": "Equity",
+      "depth": 1,
+      "balance": 500.0,
+      "currency": "EUR"
+    },
+    {
+      "fullname": "Expenses",
+      "name": "Expenses",
+      "code": "5000",
+      "type": "EXPENSE",
+      "top": "Expenses",
+      "depth": 0,
+      "balance": 0.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Expenses:Dining",
+      "name": "Dining",
+      "code": "5200",
+      "type": "EXPENSE",
+      "top": "Expenses",
+      "depth": 1,
+      "balance": 51.2,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Expenses:Groceries",
+      "name": "Groceries",
+      "code": "5100",
+      "type": "EXPENSE",
+      "top": "Expenses",
+      "depth": 1,
+      "balance": 130.7,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Expenses:Holiday EUR",
+      "name": "Holiday EUR",
+      "code": "5500",
+      "type": "EXPENSE",
+      "top": "Expenses",
+      "depth": 1,
+      "balance": 69.0,
+      "currency": "EUR"
+    },
+    {
+      "fullname": "Expenses:Transport",
+      "name": "Transport",
+      "code": "5400",
+      "type": "EXPENSE",
+      "top": "Expenses",
+      "depth": 1,
+      "balance": 117.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Expenses:Unspecified",
+      "name": "Unspecified",
+      "code": "5900",
+      "type": "EXPENSE",
+      "top": "Expenses",
+      "depth": 1,
+      "balance": 108.96,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Expenses:Utilities",
+      "name": "Utilities",
+      "code": "5300",
+      "type": "EXPENSE",
+      "top": "Expenses",
+      "depth": 1,
+      "balance": 120.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Income",
+      "name": "Income",
+      "code": "4000",
+      "type": "INCOME",
+      "top": "Income",
+      "depth": 0,
+      "balance": 0.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Income:Interest",
+      "name": "Interest",
+      "code": "4200",
+      "type": "INCOME",
+      "top": "Income",
+      "depth": 1,
+      "balance": 3.5,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Income:Salary",
+      "name": "Salary",
+      "code": "4100",
+      "type": "INCOME",
+      "top": "Income",
+      "depth": 1,
+      "balance": 2500.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Liabilities",
+      "name": "Liabilities",
+      "code": "2000",
+      "type": "LIABILITY",
+      "top": "Liabilities",
+      "depth": 0,
+      "balance": 0.0,
+      "currency": "GBP"
+    },
+    {
+      "fullname": "Liabilities:Credit Card",
+      "name": "Credit Card",
+      "code": "2100",
+      "type": "CREDIT",
+      "top": "Liabilities",
+      "depth": 1,
+      "balance": 75.15,
+      "currency": "GBP"
+    }
+  ]
+}

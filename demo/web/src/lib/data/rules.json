@@ -1,0 +1,71 @@
+{
+  "groups": [
+    {
+      "a": "Income:Salary",
+      "m": [
+        "ACME PAYROLL",
+        "SALARY"
+      ],
+      "r": []
+    },
+    {
+      "a": "Income:Interest",
+      "m": [
+        "INTEREST"
+      ],
+      "r": []
+    },
+    {
+      "a": "Expenses:Groceries",
+      "m": [
+        "TESCO",
+        "SAINSBURY"
+      ],
+      "r": []
+    },
+    {
+      "a": "Expenses:Dining",
+      "m": [
+        "NANDO",
+        "COSTA",
+        "CAFE"
+      ],
+      "r": []
+    },
+    {
+      "a": "Expenses:Utilities",
+      "m": [
+        "BRITISH GAS",
+        "THAMES WATER"
+      ],
+      "r": []
+    },
+    {
+      "a": "Expenses:Transport",
+      "m": [
+        "GWR",
+        "TFL"
+      ],
+      "r": []
+    }
+  ],
+  "accts": [
+    "Assets",
+    "Assets:Cash",
+    "Expenses",
+    "Expenses:Books",
+    "Expenses:DIY",
+    "Expenses:Dining",
+    "Expenses:Garden",
+    "Expenses:Groceries",
+    "Expenses:Miscellaneous",
+    "Expenses:Shopping",
+    "Expenses:Transport",
+    "Expenses:Utilities",
+    "Income",
+    "Income:Interest",
+    "Income:Other Income",
+    "Income:Salary",
+    "Liabilities"
+  ]
+}

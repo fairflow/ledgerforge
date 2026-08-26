@@ -1,0 +1,72 @@
+# Build the demo/web Svelte toolkit and publish it to GitHub Pages.
+# Serves at https://fairflow.github.io/ledgerforge/  (BASE_PATH must match that sub-path).
+# Enable once: repo Settings → Pages → Build and deployment → Source: "GitHub Actions".
+#
+# The engine is the source of truth even in CI: we rebuild the fictional GnuCash book from the
+# committed statements and re-export its JSON, rather than committing any *.gnucash binary (which
+# the repo deliberately gitignores).
+name: Deploy demo toolkit to Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'demo/web/**'
+      - 'demo/build_demo.py'
+      - 'demo/data/**'
+      - 'src/ledgerforge/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild the fictional book + export JSON (engine is source of truth)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . piecash
+          python demo/build_demo.py
+          python demo/web/scripts/export_data.py
+          cp demo/build/demo.gnucash demo/web/static/demo.gnucash
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: demo/web/package-lock.json
+      - name: Build the static site
+        working-directory: demo/web
+        run: |
+          npm ci
+          npm run build
+        env:
+          BASE_PATH: /ledgerforge
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: demo/web/build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

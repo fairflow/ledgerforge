@@ -1,0 +1,129 @@
+{
+  "rows": [
+    {
+      "d": "RIVERSIDE GARDEN CENTRE",
+      "c": 1,
+      "t": -30.0,
+      "tok": "RIVERSIDE GARDEN CENTRE",
+      "acct": "Expenses:Garden",
+      "src": [
+        "Current"
+      ],
+      "txns": [
+        {
+          "d": "2026-01-20",
+          "a": -30.0,
+          "s": "Current",
+          "aid": "demo-current"
+        }
+      ]
+    },
+    {
+      "d": "SCREWFIX TOTNES",
+      "c": 1,
+      "t": -28.47,
+      "tok": "SCREWFIX TOTNES",
+      "acct": "Expenses:DIY",
+      "src": [
+        "Current"
+      ],
+      "txns": [
+        {
+          "d": "2026-01-14",
+          "a": -28.47,
+          "s": "Current",
+          "aid": "demo-current"
+        }
+      ]
+    },
+    {
+      "d": "AMAZON.CO.UK*RT4K92",
+      "c": 1,
+      "t": -22.5,
+      "tok": "AMAZON",
+      "acct": "Expenses:Shopping",
+      "src": [
+        "Current"
+      ],
+      "txns": [
+        {
+          "d": "2026-01-17",
+          "a": -22.5,
+          "s": "Current",
+          "aid": "demo-current"
+        }
+      ]
+    },
+    {
+      "d": "PARKRUN SHOP",
+      "c": 1,
+      "t": -15.0,
+      "tok": "PARKRUN SHOP",
+      "acct": "",
+      "src": [
+        "Current"
+      ],
+      "txns": [
+        {
+          "d": "2026-01-26",
+          "a": -15.0,
+          "s": "Current",
+          "aid": "demo-current"
+        }
+      ]
+    },
+    {
+      "d": "WATERSTONES PLYMOUTH",
+      "c": 1,
+      "t": -12.99,
+      "tok": "WATERSTONES PLYMOUTH",
+      "acct": "Expenses:Books",
+      "src": [
+        "Current"
+      ],
+      "txns": [
+        {
+          "d": "2026-01-08",
+          "a": -12.99,
+          "s": "Current",
+          "aid": "demo-current"
+        }
+      ]
+    }
+  ],
+  "accts": [
+    "Assets:Cash",
+    "Expenses:Books",
+    "Expenses:DIY",
+    "Expenses:Dining",
+    "Expenses:Garden",
+    "Expenses:Groceries",
+    "Expenses:Miscellaneous",
+    "Expenses:Shopping",
+    "Expenses:Transport",
+    "Expenses:Utilities",
+    "Income:Interest",
+    "Income:Other Income",
+    "Income:Salary"
+  ],
+  "alldesc": {
+    "ACME PAYROLL SALARY JAN": 1,
+    "TESCO STORES 2891 TOTNES": 2,
+    "NANDOS PECKHAM": 1,
+    "BRITISH GAS DD": 1,
+    "GWR TRAINS RAIL": 2,
+    "SAINSBURYS SUPERMARKET": 1,
+    "COSTA COFFEE": 1,
+    "THAMES WATER DD": 1,
+    "TFL TRAVEL OYSTER": 1,
+    "WATERSTONES PLYMOUTH": 1,
+    "SCREWFIX TOTNES": 1,
+    "AMAZON.CO.UK*RT4K92": 1,
+    "RIVERSIDE GARDEN CENTRE": 1,
+    "PARKRUN SHOP": 1,
+    "INTEREST PAID GROSS": 1,
+    "THE OLD FORGE CAFE": 1,
+    "TAPAS BAR MADRID": 1,
+    "MUSEO DEL PRADO": 1
+  }
+}
