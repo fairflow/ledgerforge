@@ -35,11 +35,18 @@ every figure.
 Needs **Node 20+** (see `.nvmrc`). Regenerate the data after rebuilding the demo book, then run:
 
 ```bash
-python ../build_demo.py                 # (re)build the fictional GnuCash book
+python ../build_demo.py                 # (re)build the fictional GnuCash book (SQLite, via piecash)
 python scripts/export_data.py           # export book/rules/unspec JSON  (needs the ledger venv)
+python scripts/book_to_xml.py           # convert the book to committed XML (static/demo.gnucash)
 npm install
 npm run dev                             # http://localhost:5173
 ```
+
+`static/demo.gnucash` is the fictional book stored as **GnuCash XML** (text, diffable, deterministic
+GUIDs) so it can live in git and anyone who clones can open it in GnuCash. It plus the exported JSON
+are committed, which is why CI is a plain static build with no Python. Re-run the three scripts above
+whenever the statements or rules change, and commit the regenerated `src/lib/data/*.json` +
+`static/demo.gnucash`.
 
 ## Build & deploy
 
